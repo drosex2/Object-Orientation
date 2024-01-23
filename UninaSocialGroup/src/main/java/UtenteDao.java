@@ -116,7 +116,7 @@ public class UtenteDao {
             // crea uno statement semplice
             stmt = this.conn.createStatement();
 
-            String query = "UPDATE utente SET email = '"+email+"' WHERE username = '"+username+"';";
+            String query = "UPDATE utente SET email = '"+email+"' WHERE username LIKE '"+username+"';";
 
             stmt.execute(query);
             
@@ -138,7 +138,7 @@ public class UtenteDao {
             // crea uno statement 
             stmt = this.conn.createStatement();
 
-            String query = "UPDATE utente SET password = '"+password+"' WHERE username = '"+username+"';";
+            String query = "UPDATE utente SET password = '"+password+"' WHERE username LIKE '"+username+"';";
 
             stmt.execute(query);
             

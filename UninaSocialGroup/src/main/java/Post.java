@@ -3,7 +3,7 @@ import java.util.Objects;
 
 public class Post {
 	//ATTRIBUTI
-	private String idString;
+	private String idPost;
 	private String foto;
 	private String testo;
 	private LocalDate dataPubblicazione;
@@ -13,11 +13,11 @@ public class Post {
 	
 	
 	//GETTERS e SETTERS
-	public String getIdString() {
-		return idString;
+	public String getIdPost() {
+		return idPost;
 	}
-	public void setIdString(String idString) {
-		this.idString = idString;
+	public void setIdPost(String idString) {
+		this.idPost = idString;
 	}
 	public String getFoto() {
 		return foto;
@@ -61,7 +61,7 @@ public class Post {
 	public Post(String idString, String foto, String testo, LocalDate dataPubblicazione, LocalTime oraPubblicazione,
 			Gruppo gruppo, Utente utenteAutore) {
 		super();
-		this.idString = idString;
+		this.idPost = idString;
 		this.foto = foto;
 		this.testo = testo;
 		this.dataPubblicazione = dataPubblicazione;
@@ -81,11 +81,11 @@ public class Post {
 		if (getClass() != obj.getClass())
 			return false;
 		Post other = (Post) obj;
-		return Objects.equals(idString, other.idString);
+		return Objects.equals(idPost, other.idPost);
 	}
 	@Override
 	public String toString() {
-		return "Post [idString=" + idString + ", foto=" + foto + ", testo=" + testo + ", dataPubblicazione="
+		return "Post [idPost=" + idPost + ", foto=" + foto + ", testo=" + testo + ", dataPubblicazione="
 				+ dataPubblicazione + ", oraPubblicazione=" + oraPubblicazione + ", gruppo=" + gruppo
 				+ ", utenteAutore=" + utenteAutore + "]";
 	}
