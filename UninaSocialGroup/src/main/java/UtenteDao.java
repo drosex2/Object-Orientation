@@ -1,7 +1,13 @@
-import java.sql.*;
-import java.sql.Date;
+
+
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.LinkedList;
 
 public class UtenteDao {
 	private Connection conn = null;
@@ -107,7 +113,63 @@ public class UtenteDao {
         }
         
 	}
-	
+	public Utente getLogin(String username,String password)
+	{
+		Utente utenteReturn;
+	    Statement stmt = null;
+        try {
+
+            // crea uno statement semplice
+            stmt = this.conn.createStatement();
+
+            PreparedStatement ps_queryforname = conn.prepareStatement("Select * from Utente where username LIKE '"+username+"' AND password LIKE '"+password+"';");
+            
+
+            ResultSet rs = ps_queryforname.executeQuery();
+            rs.next();
+            String usernameReturn=rs.getString(1);
+            String emailReturn=rs.getString(2);
+            String passwordReturn=rs.getString(3);
+            
+            ps_queryforname = conn.prepareStatement("Select gruppo.* From amministra INNER JOIN gruppo on amministra.\"idGruppo\"=gruppo.\"idGruppo\" Where amministra.username LIKE '"+username+"';");
+            rs = ps_queryforname.executeQuery();
+            LinkedList<Gruppo> gruppiAmministrati=new LinkedList<Gruppo>();
+            while(rs.next())
+            {
+            	String idGruppo=rs.getString(1);
+            	String nomeGruppo=rs.getString(2);
+            	String tag=rs.getString(3);
+            	LocalDate dataCreazione = rs.getDate(4).toLocalDate();
+            	Utente utenteCreatore= new Utente(rs.getString(5),null,null,null,null);
+            	Gruppo gruppoAmministrato=new Gruppo(idGruppo,nomeGruppo,tag,dataCreazione,utenteCreatore);
+            	gruppiAmministrati.add(gruppoAmministrato);
+            }
+            ps_queryforname = conn.prepareStatement("Select gruppo.* From iscrizione INNER JOIN gruppo on iscrizione.\"idGruppo\"=gruppo.\"idGruppo\" Where iscrizione.username LIKE '"+username+"';");
+            rs = ps_queryforname.executeQuery();
+            LinkedList<Gruppo> iscrizioni=new LinkedList<Gruppo>();
+            while(rs.next())
+            {
+            	String idGruppo=rs.getString(1);
+            	String nomeGruppo=rs.getString(2);
+            	String tag=rs.getString(3);
+            	LocalDate dataCreazione = rs.getDate(4).toLocalDate();
+            	Utente utenteCreatore= new Utente(rs.getString(5),null,null,null,null);
+            	Gruppo gruppoIscritto=new Gruppo(idGruppo,nomeGruppo,tag,dataCreazione,utenteCreatore);
+            	iscrizioni.add(gruppoIscritto);
+            }
+            utenteReturn=new Utente(usernameReturn,emailReturn,passwordReturn,gruppiAmministrati,iscrizioni);
+            
+            stmt.close();
+
+            
+            return utenteReturn;
+
+        } catch (SQLException throwables) {
+            
+            return null;
+        }
+        
+	}
 	public void updateEmailByUser(String username,String email) {
 		
 	    Statement stmt = null;

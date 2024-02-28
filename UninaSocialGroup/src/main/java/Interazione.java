@@ -70,6 +70,10 @@ public class Interazione {
 		return "Interazione [idInterazione=" + idInterazione + ", data=" + data + ", ora=" + ora + ", utente=" + utente
 				+ ", post=" + post + "]";
 	}
+	public String getTesto() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

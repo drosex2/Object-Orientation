@@ -1,7 +1,7 @@
+
 import java.sql.*;
 import java.sql.Date;
 import java.time.*;
-import java.util.*;
 
 public class PostDao {
 	private Connection conn = null;
@@ -66,6 +66,7 @@ public class PostDao {
 
             ResultSet rs = ps_queryforname.executeQuery();
             rs.next();
+            
             String idPostReturn=rs.getString(1);
             String fotoReturn=rs.getString(2);
             String testoReturn=rs.getString(3);
@@ -87,9 +88,9 @@ public class PostDao {
             return postReturn;
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
-            System.exit(0);
+//            throwables.printStackTrace();
+//            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
+//            System.exit(0);
             return null;
         }
         

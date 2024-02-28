@@ -1,3 +1,4 @@
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -81,10 +82,10 @@ public class CercaGruppo extends JFrame {
 		SceltaTema.setBounds(160, 183, 210, 25);
 		contentPane.add(SceltaTema);
 		
-		JLabel foto = new JLabel("");
-		foto.setBounds(24, -63, 439, 260);
-		ImageIcon icon = new ImageIcon(this.getClass().getResource("/stemmaLungo.png"));
-		foto.setIcon(icon);
-		contentPane.add(foto);
+//		JLabel foto = new JLabel("");
+//		foto.setBounds(24, -63, 439, 260);
+//		ImageIcon icon = new ImageIcon(this.getClass().getResource("/stemmaLungo.png"));
+//		foto.setIcon(icon);
+//		contentPane.add(foto);
 	}
 }
