@@ -1,18 +1,15 @@
 import java.awt.EventQueue;
 
 import javax.swing.*;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
-import javax.swing.ImageIcon;
-
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 
 public class InserisciPostPage extends JFrame {
@@ -22,32 +19,22 @@ public class InserisciPostPage extends JFrame {
 	private JLabel lblIcon;
 	private JLabel lblInserisciDescrizione;
 	private JLabel lblSelezionaGruppo;
-	private JButton btnLogin;
+	private JButton btnCreaPost;
 	private JLabel lblCreaPost;
-	private JComboBox cbSelezionaGruppo;
-	private JTextArea textArea;
+	private JComboBox<String> cbSelezionaGruppo;
+	private JTextArea taDescrizione;
 	private JButton btnIndietro;
-
+	private GestoreApplicazione controller;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InserisciPostPage frame = new InserisciPostPage();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public InserisciPostPage() {
+	public InserisciPostPage(GestoreApplicazione gestore) {
+		controller=gestore;
 		setTitle("Login");
 		setBackground(new Color(255, 255, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -91,7 +78,7 @@ public class InserisciPostPage extends JFrame {
 		gbc_panelRight.gridy = 0;
 		contentPane.add(panelRight, gbc_panelRight);
 		GridBagLayout gbl_panelRight = new GridBagLayout();
-		gbl_panelRight.columnWidths = new int[]{0, 81, 186, 168, 0};
+		gbl_panelRight.columnWidths = new int[]{0, 220, 217, 168, 0};
 		gbl_panelRight.rowHeights = new int[]{5, 5, 5, 52, 36, 36, 9, 97, 5, 5, 0};
 		gbl_panelRight.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_panelRight.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -117,16 +104,17 @@ public class InserisciPostPage extends JFrame {
 		gbc_lblInserisciDescrizione.gridy = 4;
 		panelRight.add(lblInserisciDescrizione, gbc_lblInserisciDescrizione);
 		
-		textArea = new JTextArea();
-		textArea.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		textArea.setRows(5);
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.ipady = 5;
-		gbc_textArea.fill = GridBagConstraints.BOTH;
-		gbc_textArea.insets = new Insets(0, 0, 5, 5);
-		gbc_textArea.gridx = 2;
-		gbc_textArea.gridy = 4;
-		panelRight.add(textArea, gbc_textArea);
+		taDescrizione = new JTextArea();
+		taDescrizione.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		taDescrizione.setRows(8);
+		GridBagConstraints gbc_taDescrizione = new GridBagConstraints();
+		JScrollPane scrollPane = new JScrollPane( taDescrizione );
+		gbc_taDescrizione.ipady = 5;
+		gbc_taDescrizione.fill = GridBagConstraints.BOTH;
+		gbc_taDescrizione.insets = new Insets(0, 0, 5, 5);
+		gbc_taDescrizione.gridx = 2;
+		gbc_taDescrizione.gridy = 4;
+		panelRight.add(scrollPane, gbc_taDescrizione);
 		
 		lblSelezionaGruppo = new JLabel("Seleziona Gruppo");
 		lblSelezionaGruppo.setForeground(Color.WHITE);
@@ -139,31 +127,49 @@ public class InserisciPostPage extends JFrame {
 		gbc_lblSelezionaGruppo.gridy = 5;
 		panelRight.add(lblSelezionaGruppo, gbc_lblSelezionaGruppo);
 		
-		btnLogin = new JButton("Crea Post");
-		btnLogin.setToolTipText("");
-		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnLogin.setForeground(new Color(255, 255, 255));
-		btnLogin.setBackground(new Color(0, 128, 192));
-		btnLogin.addActionListener(new ActionListener() {
+		btnCreaPost = new JButton("Crea Post");
+		btnCreaPost.setToolTipText("");
+		btnCreaPost.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnCreaPost.setForeground(new Color(255, 255, 255));
+		btnCreaPost.setBackground(new Color(0, 128, 192));
+		btnCreaPost.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String descrizione=taDescrizione.getText();
+				if (descrizione.isEmpty())
+				{
+					mostraMessaggioDiDialogo("Inserisci una descrizione!","ATTENZIONE!");
+				}
+				else
+				{
+				String nomeGruppo=(String)cbSelezionaGruppo.getSelectedItem();
+				controller.creaPostClicked(descrizione, nomeGruppo);
+				taDescrizione.setText(null);
+				}
 			}
 		});
 		
 		cbSelezionaGruppo = new JComboBox();
+		cbSelezionaGruppo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_cbSelezionaGruppo = new GridBagConstraints();
 		gbc_cbSelezionaGruppo.insets = new Insets(0, 0, 5, 5);
 		gbc_cbSelezionaGruppo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbSelezionaGruppo.gridx = 2;
 		gbc_cbSelezionaGruppo.gridy = 5;
 		panelRight.add(cbSelezionaGruppo, gbc_cbSelezionaGruppo);
-		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
-		gbc_btnLogin.ipadx = 30;
-		gbc_btnLogin.insets = new Insets(0, 0, 5, 5);
-		gbc_btnLogin.gridx = 2;
-		gbc_btnLogin.gridy = 6;
-		panelRight.add(btnLogin, gbc_btnLogin);
+		GridBagConstraints gbc_btnCreaPost = new GridBagConstraints();
+		gbc_btnCreaPost.ipadx = 30;
+		gbc_btnCreaPost.insets = new Insets(0, 0, 5, 5);
+		gbc_btnCreaPost.gridx = 2;
+		gbc_btnCreaPost.gridy = 6;
+		panelRight.add(btnCreaPost, gbc_btnCreaPost);
 		
 		btnIndietro = new JButton("Indietro");
+		btnIndietro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				controller.indietroClicked();
+			}
+		});
 		btnIndietro.setForeground(new Color(255, 255, 255));
 		btnIndietro.setBackground(new Color(0, 128, 192));
 		btnIndietro.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -173,5 +179,15 @@ public class InserisciPostPage extends JFrame {
 		gbc_btnIndietro.gridy = 8;
 		panelRight.add(btnIndietro, gbc_btnIndietro);
 	}
-
+	
+	public void mostraMessaggioDiDialogo(String testo, String titolo) {
+		JOptionPane.showMessageDialog(this, testo, titolo, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void setCbSelezionaGruppo(LinkedList<Gruppo> gruppi) {
+		for(Gruppo g:gruppi)
+		{
+			this.cbSelezionaGruppo.addItem(g.getNome());
+		}
+	}
 }

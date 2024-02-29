@@ -10,6 +10,8 @@ import java.awt.Insets;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginPage extends JFrame {
 
@@ -148,18 +150,18 @@ public class LoginPage extends JFrame {
 				String passwordInserita=new String(tfPassword.getPassword());
 				if (usernameInserito.isEmpty())
 				{
-					mostraMessageDialog("Inserire un username!","ATTENZIONE");
+					mostraMessaggioDiErrore("Inserire un username!","ATTENZIONE");
 				}
 				else if(passwordInserita.isEmpty())
 				{
-					mostraMessageDialog("Inserire una password!","ATTENZIONE");
+					mostraMessaggioDiErrore("Inserire una password!","ATTENZIONE");
 				}
 				else
 				{	
 					boolean esitoLogin=controller.controllaLogin(usernameInserito, passwordInserita);
 					if(!esitoLogin)
 					{
-						mostraMessageDialog("Account non esistente! Username e/o password errati!","ATTENZIONE");
+						mostraMessaggioDiErrore("Account non esistente! Username e/o password errati!","ATTENZIONE");
 					}
 					else
 					{
@@ -187,7 +189,7 @@ public class LoginPage extends JFrame {
 		gbc_btnLogin.gridy = 6;
 		panelRight.add(btnLogin, gbc_btnLogin);
 	}
-	private void mostraMessageDialog(String testo, String titolo) {
+	public void mostraMessaggioDiErrore(String testo, String titolo) {
 		JOptionPane.showMessageDialog(this, testo, titolo, JOptionPane.INFORMATION_MESSAGE);
 	}
 }

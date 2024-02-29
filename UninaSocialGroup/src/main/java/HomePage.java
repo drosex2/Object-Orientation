@@ -1,18 +1,13 @@
 import java.awt.EventQueue;
 
 import javax.swing.*;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
@@ -99,6 +94,11 @@ public class HomePage extends JFrame {
 		panelRight.add(lblNewLabel, gbc_lblNewLabel);
 		
 		btnInserisciPost = new JButton("Inserisci un Post");
+		btnInserisciPost.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.inserisciPostClicked();
+			}
+		});
 		btnInserisciPost.setBackground(new Color(0, 128, 192));
 		btnInserisciPost.setForeground(new Color(255, 255, 255));
 		btnInserisciPost.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -111,6 +111,11 @@ public class HomePage extends JFrame {
 		panelRight.add(btnInserisciPost, gbc_btnInserisciPost);
 		
 		btnCercaGruppo = new JButton("Cerca Gruppo");
+		btnCercaGruppo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.cercaGruppoClicked();
+			}
+		});
 		btnCercaGruppo.setForeground(new Color(255, 255, 255));
 		btnCercaGruppo.setBackground(new Color(0, 128, 192));
 		btnCercaGruppo.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -166,5 +171,7 @@ public class HomePage extends JFrame {
 		gbc_lblNewLabel_1.gridy = 8;
 		panelRight.add(lblNewLabel_1, gbc_lblNewLabel_1);
 	}
-
+	public void mostraMessaggioDiErrore(String testo, String titolo) {
+		JOptionPane.showMessageDialog(this, testo, titolo, JOptionPane.INFORMATION_MESSAGE);
+	}
 }

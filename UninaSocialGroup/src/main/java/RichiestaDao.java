@@ -22,7 +22,7 @@ public class RichiestaDao {
 	
 	
 	
-	public void save(Richiesta richiesta)
+	public boolean save(Richiesta richiesta)
 	{
 		String idRichiesta=richiesta.getIdRichiesta();
 		Date dataRichiesta=Date.valueOf(richiesta.getDataRichiesta());
@@ -43,13 +43,14 @@ public class RichiestaDao {
             
             stmt.close();
 
-            
+            return true;
 
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
-            System.exit(0);
+//            throwables.printStackTrace();
+//            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
+//            System.exit(0);
+        	return false;
         }
 	}
 	public Richiesta getById(String idRichiesta)
@@ -96,7 +97,39 @@ public class RichiestaDao {
         }
         
 	}
-	
+	public int getUltimoId()
+	{
+		int idReturn;
+	    Statement stmt = null;
+        try {
+
+            // crea uno statement semplice
+            stmt = this.conn.createStatement();
+
+            PreparedStatement ps_queryforname = conn.prepareStatement("Select max(\"idRichiesta\"::INTEGER) from richiesta;");
+            
+
+            ResultSet rs = ps_queryforname.executeQuery();
+            rs.next();
+            idReturn=Integer.valueOf(rs.getString(1));
+            
+            
+            
+            
+            
+            stmt.close();
+
+            
+            return idReturn;
+
+        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
+//            System.exit(0);
+            return 0;
+        }
+        
+	}
 	public LinkedList<Richiesta> getByGruppo(String idGruppo)
 	{
 		LinkedList<Richiesta> richiesteReturn=new LinkedList<Richiesta>();

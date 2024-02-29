@@ -22,7 +22,7 @@ public class PostDao {
 	
 	
 	
-	public void save(Post postDaSalvare)
+	public boolean save(Post postDaSalvare)
 	{
 		String idPost=postDaSalvare.getIdPost();
 		String foto=postDaSalvare.getFoto();
@@ -43,15 +43,20 @@ public class PostDao {
             
             stmt.close();
 
-            
+            return true;
 
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
-            System.exit(0);
+//            throwables.printStackTrace();
+//            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
+//            System.exit(0);
+        	return false;
         }
 	}
+	
+	
+	
+	
 	public Post getById(String idPost)
 	{
 		Post postReturn;
@@ -92,6 +97,39 @@ public class PostDao {
 //            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
 //            System.exit(0);
             return null;
+        }
+        
+	}
+	public int getUltimoId()
+	{
+		int idReturn;
+	    Statement stmt = null;
+        try {
+
+            // crea uno statement semplice
+            stmt = this.conn.createStatement();
+
+            PreparedStatement ps_queryforname = conn.prepareStatement("Select max(\"idPost\"::INTEGER) from post;");
+            
+
+            ResultSet rs = ps_queryforname.executeQuery();
+            rs.next();
+            idReturn=Integer.valueOf(rs.getString(1));
+            
+            
+            
+            
+            
+            stmt.close();
+
+            
+            return idReturn;
+
+        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
+//            System.exit(0);
+            return 0;
         }
         
 	}

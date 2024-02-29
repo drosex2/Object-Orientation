@@ -119,9 +119,9 @@ public class GruppoDao {
             return gruppoReturn;
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
-            System.exit(0);
+//            throwables.printStackTrace();
+//            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
+//            System.exit(0);
             return null;
         }
         
