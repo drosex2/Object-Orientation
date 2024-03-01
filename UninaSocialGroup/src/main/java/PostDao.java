@@ -133,7 +133,7 @@ public class PostDao {
         }
         
 	}
-	public Post getPostConPiuLikeMensile(String idGruppo,int year,int month)
+	public Post getPostConPiuLikeMensile(String idGruppo,int anno,int mese)
 	{
 		Post postReturn;
 	    Statement stmt = null;
@@ -145,8 +145,8 @@ public class PostDao {
             PreparedStatement ps_queryforname = conn.prepareStatement(
             		"Select post.*,count(*) as num_like\r\n"
             		+ "From post inner join interazione on post.\"idPost\"=interazione.\"idPost\"\r\n"
-            		+ "Where post.\"idGruppo\" like '"+idGruppo+"' AND EXTRACT(YEAR FROM post.\"dataPubblicazione\")="+year+"\r\n"
-            		+ "	AND EXTRACT(MONTH FROM post.\"dataPubblicazione\")="+month+" AND interazione.\"tipoInterazione\" LIKE 'like'\r\n"
+            		+ "Where post.\"idGruppo\" like '"+idGruppo+"' AND EXTRACT(YEAR FROM post.\"dataPubblicazione\")="+anno+"\r\n"
+            		+ "	AND EXTRACT(MONTH FROM post.\"dataPubblicazione\")="+mese+" AND interazione.\"tipoInterazione\" LIKE 'like'\r\n"
             		+ "Group by post.\"idPost\"\r\n"
             		+ "Order by num_like Desc;");
             

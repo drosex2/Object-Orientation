@@ -182,7 +182,7 @@ public class RichiestaDao {
             // crea uno statement semplice
             stmt = this.conn.createStatement();
 
-            String query = "UPDATE richiesta SET nome = true WHERE \"idRichiesta\" LIKE '"+idRichiesta+"';";
+            String query = "UPDATE richiesta SET esito = true WHERE \"idRichiesta\" LIKE '"+idRichiesta+"';";
 
             stmt.execute(query);
             

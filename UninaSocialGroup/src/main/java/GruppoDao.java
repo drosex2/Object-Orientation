@@ -167,6 +167,47 @@ public class GruppoDao {
         
 	}
 	
+	public LinkedList<Gruppo> getByCreatore(String usernameCreatore)
+	{
+		LinkedList<Gruppo> gruppiReturn=new LinkedList<Gruppo>();
+	    Statement stmt = null;
+        try {
+
+            // crea uno statement semplice
+            stmt = this.conn.createStatement();
+
+            PreparedStatement ps_queryforname = conn.prepareStatement("Select * from Gruppo where \"usernameCreatore\" = '"+usernameCreatore+"';");
+            
+
+            ResultSet rs = ps_queryforname.executeQuery();
+            while(rs.next())
+            {
+	            String idGruppoReturn=rs.getString(1);
+	            String nomeReturn=rs.getString(2);
+	            String tagReturn=rs.getString(3);
+	            LocalDate dataCreazioneReturn = rs.getDate(4).toLocalDate();
+	            String usernameCreatoreReturn =rs.getString(5);
+	            UtenteDao utenteDao=new UtenteDao();
+	            Utente utenteCreatoreReturn=utenteDao.getByUsername(usernameCreatoreReturn);
+	            
+	            
+	            Gruppo gruppoReturn=new Gruppo(idGruppoReturn,nomeReturn,tagReturn,dataCreazioneReturn,utenteCreatoreReturn);
+	            gruppiReturn.add(gruppoReturn);
+            }
+            stmt.close();
+
+            
+            return gruppiReturn;
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
+            System.exit(0);
+            return null;
+        }
+        
+	}
+	
 	public void updateNameById(String idGruppo,String nuovoNome) {
 		
 	    Statement stmt = null;

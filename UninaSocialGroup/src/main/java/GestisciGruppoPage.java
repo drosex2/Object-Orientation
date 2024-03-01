@@ -4,21 +4,25 @@ import javax.swing.*;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.toedter.calendar.*;
+
 
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import javax.swing.ImageIcon;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import java.awt.Button;
-
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.time.*;
 public class GestisciGruppoPage extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -26,35 +30,22 @@ public class GestisciGruppoPage extends JFrame {
 	private JLabel lblIcon;
 	private JLabel lblVisualizzaRichieste;
 	private JLabel lblSelezionaReport;
-	private JButton btnMostraPost;
-	private JComboBox cbSelezionaReport;
+	private JButton btnMostraReport;
+	private JComboBox<String> cbSelezionaReport;
 	private JButton btnIndietro;
 	private JButton btnVisualizzaRichieste;
-	private JComboBox cbSelezionaGruppo;
+	private JComboBox<String> cbSelezionaGruppo;
 	private JLabel lblSelezionaGruppo;
+	private JLabel lblSelezionaMese;
+	private GestoreApplicazione controller;
+	
 	private JLabel lblNewLabel;
-	private Button button;
-
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GestisciGruppoPage frame = new GestisciGruppoPage();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public GestisciGruppoPage() {
+	
+	public GestisciGruppoPage(GestoreApplicazione gestore) {
+		controller=gestore;
 		setTitle("Login");
 		setBackground(new Color(255, 255, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -114,9 +105,10 @@ public class GestisciGruppoPage extends JFrame {
 		gbc_lblSelezionaGruppo.gridy = 3;
 		panelRight.add(lblSelezionaGruppo, gbc_lblSelezionaGruppo);
 		
-		cbSelezionaGruppo = new JComboBox();
+		cbSelezionaGruppo = new JComboBox<String>();
+		cbSelezionaGruppo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		cbSelezionaGruppo.setBackground(new Color(255, 255, 255));
-		cbSelezionaGruppo.setForeground(new Color(255, 255, 255));
+		cbSelezionaGruppo.setForeground(new Color(0, 0, 0));
 		GridBagConstraints gbc_cbSelezionaGruppo = new GridBagConstraints();
 		gbc_cbSelezionaGruppo.insets = new Insets(0, 0, 5, 5);
 		gbc_cbSelezionaGruppo.fill = GridBagConstraints.HORIZONTAL;
@@ -129,12 +121,18 @@ public class GestisciGruppoPage extends JFrame {
 		lblVisualizzaRichieste.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblVisualizzaRichieste = new GridBagConstraints();
 		gbc_lblVisualizzaRichieste.insets = new Insets(0, 0, 5, 5);
-		gbc_lblVisualizzaRichieste.anchor = GridBagConstraints.NORTHEAST;
+		gbc_lblVisualizzaRichieste.anchor = GridBagConstraints.EAST;
 		gbc_lblVisualizzaRichieste.gridx = 1;
 		gbc_lblVisualizzaRichieste.gridy = 4;
 		panelRight.add(lblVisualizzaRichieste, gbc_lblVisualizzaRichieste);
 		
 		btnVisualizzaRichieste = new JButton("Visualizza");
+		btnVisualizzaRichieste.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String gruppoSelezionato=(String)cbSelezionaGruppo.getSelectedItem();
+				controller.visualizzaRichiesteClicked(gruppoSelezionato);
+			}
+		});
 		btnVisualizzaRichieste.setToolTipText("Visualizza richieste");
 		btnVisualizzaRichieste.setForeground(Color.WHITE);
 		btnVisualizzaRichieste.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -157,7 +155,8 @@ public class GestisciGruppoPage extends JFrame {
 		gbc_lblSelezionaReport.gridy = 5;
 		panelRight.add(lblSelezionaReport, gbc_lblSelezionaReport);
 		
-		cbSelezionaReport = new JComboBox();
+		cbSelezionaReport = new JComboBox<String>();
+		cbSelezionaReport.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_cbSelezionaReport = new GridBagConstraints();
 		gbc_cbSelezionaReport.insets = new Insets(0, 0, 5, 5);
 		gbc_cbSelezionaReport.fill = GridBagConstraints.HORIZONTAL;
@@ -165,46 +164,50 @@ public class GestisciGruppoPage extends JFrame {
 		gbc_cbSelezionaReport.gridy = 5;
 		panelRight.add(cbSelezionaReport, gbc_cbSelezionaReport);
 		
-		btnMostraPost = new JButton("Visualizza Report");
-		btnMostraPost.setToolTipText("Crea");
-		btnMostraPost.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnMostraPost.setForeground(new Color(255, 255, 255));
-		btnMostraPost.setBackground(new Color(0, 128, 192));
-		btnMostraPost.addActionListener(new ActionListener() {
+		btnMostraReport = new JButton("Visualizza Report");
+		btnMostraReport.setToolTipText("Crea");
+		btnMostraReport.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnMostraReport.setForeground(new Color(255, 255, 255));
+		btnMostraReport.setBackground(new Color(0, 128, 192));
+		btnMostraReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String nomeGruppo=(String)cbSelezionaGruppo.getSelectedItem();
+				@SuppressWarnings("deprecation")
+				int anno;//=calendar.
+				@SuppressWarnings("deprecation")
+				int mese;//=calendar.getDate().getMonth();
+				String reportScelto=(String)cbSelezionaReport.getSelectedItem();
+				//boolean postTrovato=controller.visualizzaReportClicked(nomeGruppo,anno,mese,reportScelto);
+				
 			}
 		});
 		
-		lblNewLabel = new JLabel("Seleziona mese");
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 6;
-		panelRight.add(lblNewLabel, gbc_lblNewLabel);
+		lblSelezionaMese = new JLabel("Seleziona mese");
+		lblSelezionaMese.setForeground(new Color(255, 255, 255));
+		lblSelezionaMese.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		GridBagConstraints gbc_lblSelezionaMese = new GridBagConstraints();
+		gbc_lblSelezionaMese.anchor = GridBagConstraints.EAST;
+		gbc_lblSelezionaMese.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSelezionaMese.gridx = 1;
+		gbc_lblSelezionaMese.gridy = 6;
+		panelRight.add(lblSelezionaMese, gbc_lblSelezionaMese);
 		
-		JDateChooser calendar = new JDateChooser();
-		calendar.setDateFormatString(" MM y");
-		calendar.getCalendarButton().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		GridBagConstraints gbc_button = new GridBagConstraints();
-		gbc_button.fill = GridBagConstraints.HORIZONTAL;
-		gbc_button.insets = new Insets(0, 0, 5, 5);
-		gbc_button.gridx = 2;
-		gbc_button.gridy = 6;
-		panelRight.add(calendar, gbc_button);
-		GridBagConstraints gbc_btnMostraPost = new GridBagConstraints();
-		gbc_btnMostraPost.ipadx = 30;
-		gbc_btnMostraPost.insets = new Insets(0, 0, 5, 5);
-		gbc_btnMostraPost.gridx = 2;
-		gbc_btnMostraPost.gridy = 7;
-		panelRight.add(btnMostraPost, gbc_btnMostraPost);
+		
+		
+		GridBagConstraints gbc_btnMostraReport = new GridBagConstraints();
+		gbc_btnMostraReport.ipadx = 30;
+		gbc_btnMostraReport.insets = new Insets(0, 0, 5, 5);
+		gbc_btnMostraReport.gridx = 2;
+		gbc_btnMostraReport.gridy = 7;
+		panelRight.add(btnMostraReport, gbc_btnMostraReport);
 		
 		btnIndietro = new JButton("Indietro");
+		btnIndietro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				controller.indietroClicked();
+			}
+		});
 		btnIndietro.setForeground(new Color(255, 255, 255));
 		btnIndietro.setBackground(new Color(0, 128, 192));
 		btnIndietro.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -213,6 +216,17 @@ public class GestisciGruppoPage extends JFrame {
 		gbc_btnIndietro.gridx = 3;
 		gbc_btnIndietro.gridy = 9;
 		panelRight.add(btnIndietro, gbc_btnIndietro);
+		
+		cbSelezionaReport.addItem("Post con più like");
+		cbSelezionaReport.addItem("Post con meno like");
+		cbSelezionaReport.addItem("Post con più commenti");
+		cbSelezionaReport.addItem("Post con meno commenti");
+	}
+	public void setCbSelezionaGruppo(LinkedList<Gruppo> gruppi) {
+		for(Gruppo g:gruppi)
+		{
+			this.cbSelezionaGruppo.addItem(g.getNome());
+		}
 	}
 
 }

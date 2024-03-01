@@ -63,7 +63,7 @@ public class InviaRichiestaDialog extends JDialog {
 			contentPanel.add(lblSelezionaGruppo, gbc_lblSelezionaGruppo);
 		}
 		{
-			cbSelezionaGruppo = new JComboBox();
+			cbSelezionaGruppo = new JComboBox<String>();
 			cbSelezionaGruppo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			GridBagConstraints gbc_cbSelezionaGruppo = new GridBagConstraints();
 			gbc_cbSelezionaGruppo.fill = GridBagConstraints.BOTH;

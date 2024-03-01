@@ -127,6 +127,11 @@ public class HomePage extends JFrame {
 		panelRight.add(btnCercaGruppo, gbc_btnCercaGruppo);
 		
 		btnNotifiche = new JButton("Visualizza Notifiche");
+		btnNotifiche.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.visualizzaNotificheClicked();
+			}
+		});
 		btnNotifiche.setBackground(new Color(0, 128, 192));
 		btnNotifiche.setForeground(new Color(255, 255, 255));
 		btnNotifiche.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -138,6 +143,11 @@ public class HomePage extends JFrame {
 		panelRight.add(btnNotifiche, gbc_btnNotifiche);
 		
 		btnLogin = new JButton("Gestisci Gruppo");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.gestisciGruppoClicked();
+			}
+		});
 		btnLogin.setToolTipText("");
 		btnLogin.setForeground(Color.WHITE);
 		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -171,7 +181,7 @@ public class HomePage extends JFrame {
 		gbc_lblNewLabel_1.gridy = 8;
 		panelRight.add(lblNewLabel_1, gbc_lblNewLabel_1);
 	}
-	public void mostraMessaggioDiErrore(String testo, String titolo) {
+	public void mostraMessaggioDiDialogo(String testo, String titolo) {
 		JOptionPane.showMessageDialog(this, testo, titolo, JOptionPane.INFORMATION_MESSAGE);
 	}
 }

@@ -7,16 +7,21 @@ import javax.swing.JOptionPane;
 
 public class GestoreApplicazione {
 	
-	private static Utente utenteConnesso;
-	LoginPage loginPage;
-	HomePage  homePage;
-	InserisciPostPage inserisciPostPage;
-	CercaGruppoPage cercaGruppoPage;
-	InviaRichiestaDialog inviaRichiestaDialog;
+	private Utente utenteConnesso;
+	private LoginPage loginPage;
+	private HomePage  homePage;
+	private InserisciPostPage inserisciPostPage;
+	private CercaGruppoPage cercaGruppoPage;
+	private InviaRichiestaDialog inviaRichiestaDialog;
+	private VisualizzaNotificheDialog visualizzaNotificheDialog;
+	private GestisciGruppoPage gestisciGruppoPage;
+	private RichiesteDialog richiesteDialog;
+	
 	UtenteDao utenteDao;
 	PostDao postDao;
 	GruppoDao gruppoDao;
 	RichiestaDao richiestaDao;
+	NotificaDao notificaDao;
 	
 	
 	public GestoreApplicazione() {
@@ -25,69 +30,22 @@ public class GestoreApplicazione {
 		inserisciPostPage=new InserisciPostPage(this);
 		cercaGruppoPage=new CercaGruppoPage(this);
 		inviaRichiestaDialog=new InviaRichiestaDialog(this);
+		gestisciGruppoPage=new GestisciGruppoPage(this);
+		
 		utenteDao=new UtenteDao();
 		postDao=new PostDao();
 		gruppoDao=new GruppoDao();
 		richiestaDao=new RichiestaDao();
+		notificaDao=new NotificaDao();
 		loginPage.setVisible(true);
-		
 	}
 	public static void main(String[] args)
 	{
 		GestoreApplicazione controller=new GestoreApplicazione();
-//		UtenteDao utenteDao=new UtenteDao();
-//		utenteConnesso=utenteDao.getLogin("MarySmith","pw0003");
-//		//System.out.println(utenteConnesso);
-//		
-//		for(Gruppo g:utenteConnesso.getGruppiAmministrati())
-//		{
-//			System.out.println(g);
-//		}
-//		GruppoDao gruppoDao=new GruppoDao();
-//		gruppoDao.updateNameById("g3", "Sviluppatori");
-//		gruppoDao.updateTagById("g3", "DevTeam");
-//		LinkedList<Gruppo> gruppi=gruppoDao.getByTag("DevTeam");
-//		for(Gruppo g:gruppi)
-//		{
-//			System.out.println(g);
-//		}
-//		Gruppo nuovoGruppo=new Gruppo("g5","Premier League","calcio",LocalDate.now(),utenteConnesso);
-//		Gruppo gruppo=gruppoDao.getById("g1");
-//		PostDao postDao=new PostDao();
-//		Post post2=postDao.getById("3");
-//		InterazioneDao interazioneDao=new InterazioneDao();
-//		Interazione interazione;//=new Like("4",LocalDate.now(),LocalTime.now(),utenteConnesso,post2);
-//		//interazioneDao.updateTestoById("1", "Brutto post, non mi è piaciuto");
-//		NotificaDao notificaDao=new NotificaDao();
-//		LinkedList<Notifica> notifiche=notificaDao.getNotificheByUsername(utenteConnesso.getUsername());
-//		for(Notifica n:notifiche)
-//		{
-//			System.out.println(n);
-//		}
-//		
-//		//interazioneDao.deleteById("9");
-//		//		Post postPiuLike=postDao.getPostConPiuCommentiMensile(gruppo.getIdGruppo(), 2023, 12);
-//		System.out.println(postPiuLike);
-//		postDao.save(new Post("p6","null","che gol!",LocalDate.now(),LocalTime.now(),gruppo,utenteConnesso));
-//		RichiestaDao richiestaDao=new RichiestaDao();
-//		Richiesta richiesta=richiestaDao.getById("r1");
-//		System.out.println(richiesta);
-//		LinkedList<Richiesta> richieste=richiestaDao.getByGruppo( gruppo.getIdGruppo());
-//		for(Richiesta r:richieste)
-//		{
-//			System.out.println(r);
-//		}
-//		Interazione commento=new Commento(null, null, null, utenteConnesso, null, null);
-//		if(commento.getClass()==Commento.class)
-//		{
-//			System.out.println("è un commento");
-//		}
-//		Interazione like=new Like(null, null, null, utenteConnesso, null);
-//		if(like.getClass()==Like.class)
-//		{
-//			System.out.println("è un like");
-//		}
+
 	}
+	
+	
 	public boolean controllaLogin(String username, String password) {
 		
 		utenteConnesso=utenteDao.getLogin(username, password);
@@ -112,7 +70,7 @@ public class GestoreApplicazione {
 	public void inserisciPostClicked() {
 		if(utenteConnesso.getGruppiIscrizioni().isEmpty())
 		{
-			homePage.mostraMessaggioDiErrore("Non sei iscritto a nessun gruppo, non puoi postare nulla","ATTENZIONE!");
+			homePage.mostraMessaggioDiDialogo("Non sei iscritto a nessun gruppo, non puoi postare nulla","ATTENZIONE!");
 		}
 		else
 		{
@@ -167,6 +125,7 @@ public class GestoreApplicazione {
 			inviaRichiestaDialog.setModal(true);
 			inviaRichiestaDialog.setCbSelezionaGruppo(gruppi);
 			inviaRichiestaDialog.setDescrizione(descrizione);
+			inviaRichiestaDialog.setLocationRelativeTo(cercaGruppoPage);
 			inviaRichiestaDialog.setVisible(true);
 		}
 		else
@@ -193,5 +152,65 @@ public class GestoreApplicazione {
 			
 			return false;
 		}
+	}
+	public void visualizzaNotificheClicked() 
+	{
+		LinkedList<Notifica> notifiche=notificaDao.getNotificheByUsername(utenteConnesso.getUsername());
+		if(notifiche.isEmpty())
+		{
+			homePage.mostraMessaggioDiDialogo("Non hai nessuna notifica da visualizzare","Errore!");
+		}
+		else
+		{	
+			visualizzaNotificheDialog=new VisualizzaNotificheDialog(this,notifiche);
+			//visualizzaNotificheDialog.setModal(true);
+			//visualizzaNotificheDialog.setNotifiche(notifiche);
+			visualizzaNotificheDialog.setLocationRelativeTo(homePage);
+			visualizzaNotificheDialog.setVisible(true);
+		}
+	}
+	public void gestisciGruppoClicked() {
+		LinkedList<Gruppo> gruppiGestibili=gruppoDao.getByCreatore(utenteConnesso.getUsername());
+		gruppiGestibili.addAll(utenteConnesso.getGruppiAmministrati());
+		if(gruppiGestibili.isEmpty())
+		{
+			homePage.mostraMessaggioDiDialogo("Non sei il creatore o amministratore di nessun gruppo!", "Attenzione");
+		}
+		else
+		{
+			gestisciGruppoPage.setCbSelezionaGruppo(gruppiGestibili);
+			homePage.setVisible(false);
+			gestisciGruppoPage.setVisible(true);
+		}
+		
+	}
+	public void visualizzaRichiesteClicked(String nomeGruppo) {
+		
+			Gruppo gruppoSelezionato=gruppoDao.getByNome(nomeGruppo);
+			LinkedList<Richiesta> richieste=richiestaDao.getByGruppo(gruppoSelezionato.getIdGruppo());
+			if(richieste.isEmpty())
+			{
+				homePage.mostraMessaggioDiDialogo("Non hai nessuna richiesta da visualizzare","Errore!");
+			}
+			else
+			{	
+				richiesteDialog=new RichiesteDialog(this,richieste);
+				
+				richiesteDialog.setLocationRelativeTo(gestisciGruppoPage);
+				richiesteDialog.setVisible(true);
+			
+		}
+	}
+	public void accettaClicked(Richiesta richiesta) {
+		richiestaDao.updateEsitoTrueById(richiesta.getIdRichiesta());
+		
+	}
+	public void rifiutaClicked(Richiesta richiesta) {
+		richiestaDao.deleteById(richiesta.getIdRichiesta());
+		
+	}
+	public boolean visualizzaReportClicked(String nomeGruppo, int anno, int mese, String reportScelto) {
+		Gruppo gruppo=gruppoDao.getByNome(nomeGruppo);
+		return false;
 	}
 }

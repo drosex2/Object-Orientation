@@ -112,7 +112,7 @@ public class NotificaDao {
             // crea uno statement semplice
             stmt = this.conn.createStatement();
 
-            PreparedStatement ps_queryforname = conn.prepareStatement("Select * from notifica where username LIKE '"+username+"';");
+            PreparedStatement ps_queryforname = conn.prepareStatement("Select * from notifica where username LIKE '"+username+"' order by data desc;");
             
 
             ResultSet rs = ps_queryforname.executeQuery();
