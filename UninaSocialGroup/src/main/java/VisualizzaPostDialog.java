@@ -1,36 +1,28 @@
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
-import javax.swing.JComboBox;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.util.LinkedList;
 import java.awt.Font;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 
 public class VisualizzaPostDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private String descrizione;
 	private GestoreApplicazione controller;
-
-	public void setDescrizione(String descrizione)
-	{
-		this.descrizione=descrizione;
-	}
+    private JLabel lblAutore;
+    private JLabel lblNomeAutore;
+    private JLabel lblNumInterazioni;
+    private JLabel lblInterazioni;
+    private Post postReport;
+    private int numeroInterazioni;
+    
+	
 	/**
 	 * Launch the application.
 	 */
@@ -38,8 +30,13 @@ public class VisualizzaPostDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public VisualizzaPostDialog(GestoreApplicazione gestore) {
+	public VisualizzaPostDialog(GestoreApplicazione gestore,Post post,int numInterazioni) {
+		
 		controller=gestore;
+		postReport=post;
+		numeroInterazioni=numInterazioni;
+		setModal(true);
+		setTitle("Visualizza Post");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(115, 209, 255));
@@ -52,7 +49,7 @@ public class VisualizzaPostDialog extends JDialog {
 		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			JLabel lblAutore = new JLabel("Autore del post:");
+			lblAutore = new JLabel("Autore del post:");
 			lblAutore.setForeground(new Color(255, 255, 255));
 			lblAutore.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			GridBagConstraints gbc_lblAutore = new GridBagConstraints();
@@ -63,7 +60,7 @@ public class VisualizzaPostDialog extends JDialog {
 			contentPanel.add(lblAutore, gbc_lblAutore);
 		}
 		{
-			JLabel lblNomeAutore = new JLabel("");
+			JLabel lblNomeAutore = new JLabel(post.getUtenteAutore().getUsername());
 			lblNomeAutore.setForeground(new Color(255, 255, 255));
 			lblNomeAutore.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			GridBagConstraints gbc_lblNomeAutore = new GridBagConstraints();
@@ -85,6 +82,7 @@ public class VisualizzaPostDialog extends JDialog {
 		}
 		{
 			JTextArea taDescrizione = new JTextArea();
+			taDescrizione.setText(post.getTesto());
 			taDescrizione.setEditable(false);
 			taDescrizione.setRows(8);
 			taDescrizione.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -96,7 +94,7 @@ public class VisualizzaPostDialog extends JDialog {
 			contentPanel.add(taDescrizione, gbc_taDescrizione);
 		}
 		{
-			JLabel lblInterazioni = new JLabel("");
+			lblInterazioni = new JLabel("Numero interazioni:");
 			lblInterazioni.setForeground(new Color(255, 255, 255));
 			lblInterazioni.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			GridBagConstraints gbc_lblInterazioni = new GridBagConstraints();
@@ -107,18 +105,17 @@ public class VisualizzaPostDialog extends JDialog {
 			contentPanel.add(lblInterazioni, gbc_lblInterazioni);
 		}
 		{
-			JLabel lblNewLabel = new JLabel("");
-			lblNewLabel.setForeground(new Color(255, 255, 255));
-			lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-			gbc_lblNewLabel.gridx = 1;
-			gbc_lblNewLabel.gridy = 3;
-			contentPanel.add(lblNewLabel, gbc_lblNewLabel);
+			lblNumInterazioni = new JLabel();
+			lblNumInterazioni.setText(String.valueOf(numeroInterazioni));
+			lblNumInterazioni.setForeground(new Color(255, 255, 255));
+			lblNumInterazioni.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			GridBagConstraints gbc_lblNumInterazioni = new GridBagConstraints();
+			gbc_lblNumInterazioni.insets = new Insets(0, 0, 5, 5);
+			gbc_lblNumInterazioni.gridx = 1;
+			gbc_lblNumInterazioni.gridy = 3;
+			contentPanel.add(lblNumInterazioni, gbc_lblNumInterazioni);
 		}
 	}
 	
-	public void mostraMessaggioDiDialogo(String testo, String titolo) {
-		JOptionPane.showMessageDialog(this, testo, titolo, JOptionPane.INFORMATION_MESSAGE);
-	}
+
 }

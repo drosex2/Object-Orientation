@@ -16,6 +16,7 @@ public class GestoreApplicazione {
 	private VisualizzaNotificheDialog visualizzaNotificheDialog;
 	private GestisciGruppoPage gestisciGruppoPage;
 	private RichiesteDialog richiesteDialog;
+	private VisualizzaPostDialog visualizzaPostDialog;
 	
 	UtenteDao utenteDao;
 	PostDao postDao;
@@ -190,12 +191,11 @@ public class GestoreApplicazione {
 			LinkedList<Richiesta> richieste=richiestaDao.getByGruppo(gruppoSelezionato.getIdGruppo());
 			if(richieste.isEmpty())
 			{
-				homePage.mostraMessaggioDiDialogo("Non hai nessuna richiesta da visualizzare","Errore!");
+				gestisciGruppoPage.mostraMessaggioDiDialogo("Non hai nessuna richiesta da visualizzare","Errore!");
 			}
 			else
 			{	
 				richiesteDialog=new RichiesteDialog(this,richieste);
-				
 				richiesteDialog.setLocationRelativeTo(gestisciGruppoPage);
 				richiesteDialog.setVisible(true);
 			
@@ -209,8 +209,47 @@ public class GestoreApplicazione {
 		richiestaDao.deleteById(richiesta.getIdRichiesta());
 		
 	}
-	public boolean visualizzaReportClicked(String nomeGruppo, int anno, int mese, String reportScelto) {
+	public void visualizzaReportClicked(String nomeGruppo, int anno, int mese, String reportScelto) {
 		Gruppo gruppo=gruppoDao.getByNome(nomeGruppo);
-		return false;
+		Post postReport = null;
+		int numeroInterazioni=0;
+		if(reportScelto.equals("Post con più like"))
+		{
+			postReport=postDao.getPostConPiuLikeMensile(gruppo.getIdGruppo(), anno, mese);
+			if(postReport!=null)
+				numeroInterazioni=postDao.getNumeroLike(postReport.getIdPost());
+			
+		}
+		if(reportScelto.equals("Post con meno like"))
+		{
+			postReport=postDao.getPostConMenoLikeMensile(gruppo.getIdGruppo(), anno, mese);
+			if(postReport!=null)
+				numeroInterazioni=postDao.getNumeroLike(postReport.getIdPost());
+		}
+		if(reportScelto.equals("Post con più commenti"))
+		{
+			postReport=postDao.getPostConPiuCommentiMensile(gruppo.getIdGruppo(), anno, mese);
+			if(postReport!=null)
+				numeroInterazioni=postDao.getNumeroCommenti(postReport.getIdPost());
+		}
+		if(reportScelto.equals("Post con meno commenti"))
+		{
+			postReport=postDao.getPostConMenoCommentiMensile(gruppo.getIdGruppo(), anno, mese);
+			if(postReport!=null)
+				numeroInterazioni=postDao.getNumeroCommenti(postReport.getIdPost());
+		}
+		if(postReport==null)
+		{
+			gestisciGruppoPage.mostraMessaggioDiDialogo("Nessun post disponibile","Errore!");
+		}
+		else
+		{
+			visualizzaPostDialog=new VisualizzaPostDialog(this,postReport,numeroInterazioni);
+			visualizzaPostDialog.setLocationRelativeTo(gestisciGruppoPage);
+			visualizzaPostDialog.setVisible(true);
+				
+		}
+		
+		
 	}
 }

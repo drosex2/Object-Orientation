@@ -174,14 +174,12 @@ public class PostDao {
             return postReturn;
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
-            System.exit(0);
+           
             return null;
         }
         
 	}
-	public Post getPostConMenoLikeMensile(String idGruppo,int year,int month)
+	public Post getPostConMenoLikeMensile(String idGruppo,int anno,int mese)
 	{
 		Post postReturn;
 	    Statement stmt = null;
@@ -193,8 +191,8 @@ public class PostDao {
             PreparedStatement ps_queryforname = conn.prepareStatement(
             		"Select post.*,count(*) as num_like\r\n"
             		+ "From post inner join interazione on post.\"idPost\"=interazione.\"idPost\"\r\n"
-            		+ "Where post.\"idGruppo\" like '"+idGruppo+"' AND EXTRACT(YEAR FROM post.\"dataPubblicazione\")="+year+"\r\n"
-            		+ "	AND EXTRACT(MONTH FROM post.\"dataPubblicazione\")="+month+" AND interazione.\"tipoInterazione\" LIKE 'like'\r\n"
+            		+ "Where post.\"idGruppo\" like '"+idGruppo+"' AND EXTRACT(YEAR FROM post.\"dataPubblicazione\")="+anno+"\r\n"
+            		+ "	AND EXTRACT(MONTH FROM post.\"dataPubblicazione\")="+mese+" AND interazione.\"tipoInterazione\" LIKE 'like'\r\n"
             		+ "Group by post.\"idPost\"\r\n"
             		+ "Order by num_like Asc;");
             
@@ -222,14 +220,12 @@ public class PostDao {
             return postReturn;
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
-            System.exit(0);
+            
             return null;
         }
         
 	}
-	public Post getPostConPiuCommentiMensile(String idGruppo,int year,int month)
+	public Post getPostConPiuCommentiMensile(String idGruppo,int anno,int mese)
 	{
 		Post postReturn;
 	    Statement stmt = null;
@@ -241,8 +237,8 @@ public class PostDao {
             PreparedStatement ps_queryforname = conn.prepareStatement(
             		"Select post.*,count(*) as num_like\r\n"
             		+ "From post inner join interazione on post.\"idPost\"=interazione.\"idPost\"\r\n"
-            		+ "Where post.\"idGruppo\" like '"+idGruppo+"' AND EXTRACT(YEAR FROM post.\"dataPubblicazione\")="+year+"\r\n"
-            		+ "	AND EXTRACT(MONTH FROM post.\"dataPubblicazione\")="+month+" AND interazione.\"tipoInterazione\" LIKE 'commento'\r\n"
+            		+ "Where post.\"idGruppo\" like '"+idGruppo+"' AND EXTRACT(YEAR FROM post.\"dataPubblicazione\")="+anno+"\r\n"
+            		+ "	AND EXTRACT(MONTH FROM post.\"dataPubblicazione\")="+mese+" AND interazione.\"tipoInterazione\" LIKE 'commento'\r\n"
             		+ "Group by post.\"idPost\"\r\n"
             		+ "Order by num_like Desc;");
             
@@ -270,14 +266,12 @@ public class PostDao {
             return postReturn;
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
-            System.exit(0);
+            
             return null;
         }
         
 	}
-	public Post getPostConMenoCommentiMensile(String idGruppo,int year,int month)
+	public Post getPostConMenoCommentiMensile(String idGruppo,int anno,int mese)
 	{
 		Post postReturn;
 	    Statement stmt = null;
@@ -289,8 +283,8 @@ public class PostDao {
             PreparedStatement ps_queryforname = conn.prepareStatement(
             		"Select post.*,count(*) as num_like\r\n"
             		+ "From post inner join interazione on post.\"idPost\"=interazione.\"idPost\"\r\n"
-            		+ "Where post.\"idGruppo\" like '"+idGruppo+"' AND EXTRACT(YEAR FROM post.\"dataPubblicazione\")="+year+"\r\n"
-            		+ "	AND EXTRACT(MONTH FROM post.\"dataPubblicazione\")="+month+" AND interazione.\"tipoInterazione\" LIKE 'commento'\r\n"
+            		+ "Where post.\"idGruppo\" like '"+idGruppo+"' AND EXTRACT(YEAR FROM post.\"dataPubblicazione\")="+anno+"\r\n"
+            		+ "	AND EXTRACT(MONTH FROM post.\"dataPubblicazione\")="+mese+" AND interazione.\"tipoInterazione\" LIKE 'commento'\r\n"
             		+ "Group by post.\"idPost\"\r\n"
             		+ "Order by num_like Asc;");
             
@@ -318,12 +312,66 @@ public class PostDao {
             return postReturn;
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.err.println( throwables.getClass().getName()+": "+ throwables.getMessage() );
-            System.exit(0);
+            
             return null;
         }
         
+	}
+	public int getNumeroLike(String idPost)
+	{
+		int numLikeReturn;
+	    Statement stmt = null;
+        try {
+
+            // crea uno statement semplice
+            stmt = this.conn.createStatement();
+
+            PreparedStatement ps_queryforname = conn.prepareStatement(
+            		"Select count(*) from interazione inner join post on post.\"idPost\"=interazione.\"idPost\""+
+            		"where post.\"idPost\"='"+idPost+"' AND interazione.\"tipoInterazione\"='like';");
+            		
+            
+            ResultSet rs = ps_queryforname.executeQuery();
+            rs.next();
+            numLikeReturn=rs.getInt(1);
+
+            stmt.close();
+
+            
+            return numLikeReturn;
+
+        } catch (SQLException throwables) {
+        	
+            return 0;
+        }
+	}
+	public int getNumeroCommenti(String idPost)
+	{
+		int numLikeReturn;
+	    Statement stmt = null;
+        try {
+
+            // crea uno statement semplice
+            stmt = this.conn.createStatement();
+
+            PreparedStatement ps_queryforname = conn.prepareStatement(
+            		"Select count(*) from interazione inner join post on post.\"idPost\"=interazione.\"idPost\""+
+            		"where post.\"idPost\"='"+idPost+"' AND interazione.\"tipoInterazione\"='commento';");
+            		
+            
+            ResultSet rs = ps_queryforname.executeQuery();
+            rs.next();
+            numLikeReturn=rs.getInt(1);
+
+            stmt.close();
+
+            
+            return numLikeReturn;
+
+        } catch (SQLException throwables) {
+        	
+            return 0;
+        }
 	}
 	public void updateTestoById(String idPost,String nuovoTesto) {
 		

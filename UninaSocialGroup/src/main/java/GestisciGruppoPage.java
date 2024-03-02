@@ -1,20 +1,14 @@
 import java.awt.EventQueue;
 
 import javax.swing.*;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-
 
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
-import javax.swing.ImageIcon;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -23,6 +17,8 @@ import java.awt.Button;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.time.*;
+import java.util.Date;
+import java.util.Calendar;
 public class GestisciGruppoPage extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -38,7 +34,9 @@ public class GestisciGruppoPage extends JFrame {
 	private JLabel lblSelezionaGruppo;
 	private JLabel lblSelezionaMese;
 	private GestoreApplicazione controller;
-	
+	private JSpinner spinnerMese;
+	private JLabel lblSelezionaAnno;
+	private JSpinner spinnerAnno;
 	private JLabel lblNewLabel;
 	/**
 	 * Launch the application.
@@ -90,10 +88,17 @@ public class GestisciGruppoPage extends JFrame {
 		contentPane.add(panelRight, gbc_panelRight);
 		GridBagLayout gbl_panelRight = new GridBagLayout();
 		gbl_panelRight.columnWidths = new int[]{0, 81, 186, 168, 0};
-		gbl_panelRight.rowHeights = new int[]{5, 5, 5, 52, 36, 36, 9, 0, 97, 0, 5, 5, 0};
+		gbl_panelRight.rowHeights = new int[]{5, 5, 5, 52, 36, 36, 9, 0, 0, 97, 0, 5, 5, 0};
 		gbl_panelRight.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
-		gbl_panelRight.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelRight.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelRight.setLayout(gbl_panelRight);
+		
+		lblNewLabel = new JLabel("");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 2;
+		gbc_lblNewLabel.gridy = 2;
+		panelRight.add(lblNewLabel, gbc_lblNewLabel);
 		
 		lblSelezionaGruppo = new JLabel("Seleziona gruppo");
 		lblSelezionaGruppo.setForeground(new Color(255, 255, 255));
@@ -116,7 +121,7 @@ public class GestisciGruppoPage extends JFrame {
 		gbc_cbSelezionaGruppo.gridy = 3;
 		panelRight.add(cbSelezionaGruppo, gbc_cbSelezionaGruppo);
 		
-		lblVisualizzaRichieste = new JLabel("Visualizza le richieste d'accesso");
+		lblVisualizzaRichieste = new JLabel("Visualizza le richieste");
 		lblVisualizzaRichieste.setForeground(new Color(255, 255, 255));
 		lblVisualizzaRichieste.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblVisualizzaRichieste = new GridBagConstraints();
@@ -144,13 +149,12 @@ public class GestisciGruppoPage extends JFrame {
 		gbc_btnVisualizzaRichieste.gridy = 4;
 		panelRight.add(btnVisualizzaRichieste, gbc_btnVisualizzaRichieste);
 		
-		lblSelezionaReport = new JLabel("Seleziona richiesta del report");
+		lblSelezionaReport = new JLabel("Seleziona report");
 		lblSelezionaReport.setForeground(Color.WHITE);
 		lblSelezionaReport.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblSelezionaReport = new GridBagConstraints();
-		gbc_lblSelezionaReport.fill = GridBagConstraints.VERTICAL;
 		gbc_lblSelezionaReport.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSelezionaReport.anchor = GridBagConstraints.EAST;
+		gbc_lblSelezionaReport.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_lblSelezionaReport.gridx = 1;
 		gbc_lblSelezionaReport.gridy = 5;
 		panelRight.add(lblSelezionaReport, gbc_lblSelezionaReport);
@@ -158,6 +162,7 @@ public class GestisciGruppoPage extends JFrame {
 		cbSelezionaReport = new JComboBox<String>();
 		cbSelezionaReport.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_cbSelezionaReport = new GridBagConstraints();
+		gbc_cbSelezionaReport.anchor = GridBagConstraints.SOUTH;
 		gbc_cbSelezionaReport.insets = new Insets(0, 0, 5, 5);
 		gbc_cbSelezionaReport.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbSelezionaReport.gridx = 2;
@@ -172,12 +177,12 @@ public class GestisciGruppoPage extends JFrame {
 		btnMostraReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nomeGruppo=(String)cbSelezionaGruppo.getSelectedItem();
-				@SuppressWarnings("deprecation")
-				int anno;//=calendar.
-				@SuppressWarnings("deprecation")
-				int mese;//=calendar.getDate().getMonth();
+				
+				
+				int anno=(int) spinnerAnno.getValue();
+				int mese=(int) spinnerMese.getValue();
 				String reportScelto=(String)cbSelezionaReport.getSelectedItem();
-				//boolean postTrovato=controller.visualizzaReportClicked(nomeGruppo,anno,mese,reportScelto);
+				controller.visualizzaReportClicked(nomeGruppo,anno,mese,reportScelto);
 				
 			}
 		});
@@ -192,13 +197,46 @@ public class GestisciGruppoPage extends JFrame {
 		gbc_lblSelezionaMese.gridy = 6;
 		panelRight.add(lblSelezionaMese, gbc_lblSelezionaMese);
 		
+		spinnerMese = new JSpinner();
+		spinnerMese.setModel(new SpinnerNumberModel(1, 1, 12, 1));
+		spinnerMese.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		GridBagConstraints gbc_spinnerMese = new GridBagConstraints();
+		gbc_spinnerMese.fill = GridBagConstraints.HORIZONTAL;
+		gbc_spinnerMese.insets = new Insets(0, 0, 5, 5);
+		gbc_spinnerMese.gridx = 2;
+		gbc_spinnerMese.gridy = 6;
+		panelRight.add(spinnerMese, gbc_spinnerMese);
+		
+		lblSelezionaAnno = new JLabel("Seleziona anno");
+		lblSelezionaAnno.setForeground(Color.WHITE);
+		lblSelezionaAnno.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		GridBagConstraints gbc_lblSelezionaAnno = new GridBagConstraints();
+		gbc_lblSelezionaAnno.anchor = GridBagConstraints.EAST;
+		gbc_lblSelezionaAnno.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSelezionaAnno.gridx = 1;
+		gbc_lblSelezionaAnno.gridy = 7;
+		panelRight.add(lblSelezionaAnno, gbc_lblSelezionaAnno);
+		
+		spinnerAnno = new JSpinner();
+		spinnerAnno.setModel(new SpinnerNumberModel(Integer.valueOf(2024), null, null, Integer.valueOf(1)));
+		JSpinner.NumberEditor editor = new JSpinner.NumberEditor(spinnerAnno, "#");
+		spinnerAnno.setEditor(editor);
+		
+		spinnerAnno.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		GridBagConstraints gbc_spinnerAnno = new GridBagConstraints();
+		gbc_spinnerAnno.fill = GridBagConstraints.HORIZONTAL;
+		gbc_spinnerAnno.insets = new Insets(0, 0, 5, 5);
+		gbc_spinnerAnno.gridx = 2;
+		gbc_spinnerAnno.gridy = 7;
+		panelRight.add(spinnerAnno, gbc_spinnerAnno);
+		
 		
 		
 		GridBagConstraints gbc_btnMostraReport = new GridBagConstraints();
 		gbc_btnMostraReport.ipadx = 30;
 		gbc_btnMostraReport.insets = new Insets(0, 0, 5, 5);
 		gbc_btnMostraReport.gridx = 2;
-		gbc_btnMostraReport.gridy = 7;
+		gbc_btnMostraReport.gridy = 8;
 		panelRight.add(btnMostraReport, gbc_btnMostraReport);
 		
 		btnIndietro = new JButton("Indietro");
@@ -214,7 +252,7 @@ public class GestisciGruppoPage extends JFrame {
 		GridBagConstraints gbc_btnIndietro = new GridBagConstraints();
 		gbc_btnIndietro.insets = new Insets(0, 0, 5, 0);
 		gbc_btnIndietro.gridx = 3;
-		gbc_btnIndietro.gridy = 9;
+		gbc_btnIndietro.gridy = 10;
 		panelRight.add(btnIndietro, gbc_btnIndietro);
 		
 		cbSelezionaReport.addItem("Post con più like");
@@ -228,5 +266,7 @@ public class GestisciGruppoPage extends JFrame {
 			this.cbSelezionaGruppo.addItem(g.getNome());
 		}
 	}
-
+	public void mostraMessaggioDiDialogo(String testo, String titolo) {
+		JOptionPane.showMessageDialog(this, testo, titolo, JOptionPane.INFORMATION_MESSAGE);
+	}
 }
