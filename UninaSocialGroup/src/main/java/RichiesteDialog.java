@@ -15,9 +15,9 @@ public class RichiesteDialog extends JDialog {
 //	private JButton btnAccetta;
 //	private JButton btnRifiuta;
 	private LinkedList<Richiesta> richieste;
-    private GestoreApplicazione controller;
+    private Controller controller;
 
-    public RichiesteDialog(GestoreApplicazione gestore,LinkedList<Richiesta> richieste) {
+    public RichiesteDialog(Controller gestore,LinkedList<Richiesta> richieste) {
        
     	this.controller=gestore;
         this.richieste=richieste;

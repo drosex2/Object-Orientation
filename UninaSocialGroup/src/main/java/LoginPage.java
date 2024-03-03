@@ -24,7 +24,7 @@ public class LoginPage extends JFrame {
 	private JButton btnLogin;
 	private JLabel lblSignIn;
 	private JPasswordField tfPassword;
-	private GestoreApplicazione controller;
+	private Controller controller;
 
 	/**
 	 * Launch the application.
@@ -45,7 +45,7 @@ public class LoginPage extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public LoginPage(GestoreApplicazione gestore) {
+	public LoginPage(Controller gestore) {
 		controller=gestore;
 		setTitle("Login");
 		setBackground(new Color(255, 255, 255));

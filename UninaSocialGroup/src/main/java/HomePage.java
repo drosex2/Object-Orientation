@@ -25,7 +25,7 @@ public class HomePage extends JFrame {
 	private JButton btnLogout;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
-	private GestoreApplicazione controller;
+	private Controller controller;
 
 	/**
 	 * Launch the application.
@@ -35,7 +35,7 @@ public class HomePage extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public HomePage(GestoreApplicazione gestore) {
+	public HomePage(Controller gestore) {
 		controller=gestore;
 		setTitle("HomePage");
 		setBackground(new Color(255, 255, 255));

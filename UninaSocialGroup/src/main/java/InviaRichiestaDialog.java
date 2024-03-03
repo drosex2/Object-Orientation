@@ -25,7 +25,7 @@ public class InviaRichiestaDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JComboBox<String> cbSelezionaGruppo;
 	private String descrizione;
-	private GestoreApplicazione controller;
+	private Controller controller;
 
 	public void setDescrizione(String descrizione)
 	{
@@ -38,7 +38,7 @@ public class InviaRichiestaDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public InviaRichiestaDialog(GestoreApplicazione gestore) {
+	public InviaRichiestaDialog(Controller gestore) {
 		controller=gestore;
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());

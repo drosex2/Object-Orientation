@@ -24,7 +24,7 @@ public class InserisciPostPage extends JFrame {
 	private JComboBox<String> cbSelezionaGruppo;
 	private JTextArea taDescrizione;
 	private JButton btnIndietro;
-	private GestoreApplicazione controller;
+	private Controller controller;
 	/**
 	 * Launch the application.
 	 */
@@ -33,7 +33,7 @@ public class InserisciPostPage extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public InserisciPostPage(GestoreApplicazione gestore) {
+	public InserisciPostPage(Controller gestore) {
 		controller=gestore;
 		setTitle("Login");
 		setBackground(new Color(255, 255, 255));

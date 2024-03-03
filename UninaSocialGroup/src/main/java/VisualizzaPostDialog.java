@@ -14,7 +14,7 @@ public class VisualizzaPostDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private GestoreApplicazione controller;
+	private Controller controller;
     private JLabel lblAutore;
     private JLabel lblNomeAutore;
     private JLabel lblNumInterazioni;
@@ -30,7 +30,7 @@ public class VisualizzaPostDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public VisualizzaPostDialog(GestoreApplicazione gestore,Post post,int numInterazioni) {
+	public VisualizzaPostDialog(Controller gestore,Post post,int numInterazioni) {
 		
 		controller=gestore;
 		postReport=post;

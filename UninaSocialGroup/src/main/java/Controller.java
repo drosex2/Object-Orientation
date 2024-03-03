@@ -5,7 +5,7 @@ import java.util.*;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-public class GestoreApplicazione {
+public class Controller {
 	
 	private Utente utenteConnesso;
 	private LoginPage loginPage;
@@ -25,7 +25,7 @@ public class GestoreApplicazione {
 	NotificaDao notificaDao;
 	
 	
-	public GestoreApplicazione() {
+	public Controller() {
 		loginPage=new LoginPage(this);
 		homePage=new HomePage(this);
 		inserisciPostPage=new InserisciPostPage(this);
@@ -42,7 +42,7 @@ public class GestoreApplicazione {
 	}
 	public static void main(String[] args)
 	{
-		GestoreApplicazione controller=new GestoreApplicazione();
+		Controller controller=new Controller();
 
 	}
 	

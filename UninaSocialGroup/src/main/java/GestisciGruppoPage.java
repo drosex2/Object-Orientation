@@ -33,7 +33,7 @@ public class GestisciGruppoPage extends JFrame {
 	private JComboBox<String> cbSelezionaGruppo;
 	private JLabel lblSelezionaGruppo;
 	private JLabel lblSelezionaMese;
-	private GestoreApplicazione controller;
+	private Controller controller;
 	private JSpinner spinnerMese;
 	private JLabel lblSelezionaAnno;
 	private JSpinner spinnerAnno;
@@ -42,7 +42,7 @@ public class GestisciGruppoPage extends JFrame {
 	 * Launch the application.
 	 */
 	
-	public GestisciGruppoPage(GestoreApplicazione gestore) {
+	public GestisciGruppoPage(Controller gestore) {
 		controller=gestore;
 		setTitle("Login");
 		setBackground(new Color(255, 255, 255));

@@ -27,11 +27,11 @@ public class CercaGruppoPage extends JFrame {
 	private JLabel lblNewLabel;
 	private JButton btnCercaTema;
 	private JButton btnIndietro;
-    private GestoreApplicazione controller;
+    private Controller controller;
     private JTextArea taDescrizioneRichiesta;
     private JLabel lblDescrizioneRichiesta;
 	
-	public CercaGruppoPage(GestoreApplicazione gestore) {
+	public CercaGruppoPage(Controller gestore) {
 		controller=gestore;
 		setTitle("Cerca Gruppo");
 		setBackground(new Color(255, 255, 255));

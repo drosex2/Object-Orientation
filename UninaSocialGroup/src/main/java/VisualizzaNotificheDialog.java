@@ -11,10 +11,10 @@ public class VisualizzaNotificheDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private JTextArea notificationTextArea;
     private LinkedList<Notifica> notifiche;
-    private GestoreApplicazione controller;
+    private Controller controller;
     
 
-    public VisualizzaNotificheDialog(GestoreApplicazione gestore,LinkedList<Notifica> notifiche) {
+    public VisualizzaNotificheDialog(Controller gestore,LinkedList<Notifica> notifiche) {
         //super("Visualizza le tue notifiche");
     	controller=gestore;
     	this.notifiche=notifiche;
