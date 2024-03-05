@@ -6,6 +6,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.FontUIResource;
+
 import java.awt.Color;
 import javax.swing.JComboBox;
 import java.awt.GridBagLayout;
@@ -105,6 +107,7 @@ public class InviaRichiestaDialog extends JDialog {
 		}
 	}
 	public void mostraMessaggioDiDialogo(String testo, String titolo) {
+		javax.swing.UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Tahoma", Font.PLAIN, 16))); 
 		JOptionPane.showMessageDialog(this, testo, titolo, JOptionPane.INFORMATION_MESSAGE);
 	}
 }

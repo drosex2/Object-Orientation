@@ -2,6 +2,7 @@ import java.awt.EventQueue;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.FontUIResource;
 
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
@@ -259,6 +260,7 @@ public class GestisciGruppoPage extends JFrame {
 		cbSelezionaReport.addItem("Post con meno like");
 		cbSelezionaReport.addItem("Post con più commenti");
 		cbSelezionaReport.addItem("Post con meno commenti");
+		cbSelezionaReport.addItem("Numero di contenuti postati");
 	}
 	public void setCbSelezionaGruppo(LinkedList<Gruppo> gruppi) {
 		for(Gruppo g:gruppi)
@@ -267,6 +269,9 @@ public class GestisciGruppoPage extends JFrame {
 		}
 	}
 	public void mostraMessaggioDiDialogo(String testo, String titolo) {
+		javax.swing.UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Tahoma", Font.PLAIN, 16))); 
 		JOptionPane.showMessageDialog(this, testo, titolo, JOptionPane.INFORMATION_MESSAGE);
+		
+		
 	}
 }

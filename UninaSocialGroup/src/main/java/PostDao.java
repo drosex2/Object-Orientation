@@ -373,6 +373,35 @@ public class PostDao {
             return 0;
         }
 	}
+	public int getNumeroContenutiPostati(String idGruppo, int anno, int mese) {
+		int numeroContenutiReturn;
+	    Statement stmt = null;
+        try {
+
+            // crea uno statement semplice
+            stmt = this.conn.createStatement();
+
+            PreparedStatement ps_queryforname = conn.prepareStatement("select count(*)"
+            		+ "from post"
+            		+ "where post.\"idGruppo\"='"+idGruppo+"' AND extract(year from post.\"dataPubblicazione\")="+anno
+            		+ "AND extract(month from post.\"dataPubblicazione\")="+mese+"");
+            		
+            
+            ResultSet rs = ps_queryforname.executeQuery();
+            rs.next();
+            numeroContenutiReturn=rs.getInt(1);
+
+            stmt.close();
+
+            
+            return numeroContenutiReturn;
+
+        } catch (SQLException throwables) {
+        	
+            return 0;
+        }
+		
+	}
 	public void updateTestoById(String idPost,String nuovoTesto) {
 		
 	    Statement stmt = null;
@@ -421,4 +450,8 @@ public class PostDao {
         }
 		
 	}
+
+
+
+	
 }

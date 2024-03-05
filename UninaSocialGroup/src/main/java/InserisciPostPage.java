@@ -2,6 +2,8 @@ import java.awt.EventQueue;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.FontUIResource;
+
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.Color;
@@ -181,7 +183,9 @@ public class InserisciPostPage extends JFrame {
 	}
 	
 	public void mostraMessaggioDiDialogo(String testo, String titolo) {
+		javax.swing.UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Tahoma", Font.PLAIN, 16))); 
 		JOptionPane.showMessageDialog(this, testo, titolo, JOptionPane.INFORMATION_MESSAGE);
+		
 	}
 	
 	public void setCbSelezionaGruppo(LinkedList<Gruppo> gruppi) {

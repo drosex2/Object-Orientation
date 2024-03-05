@@ -2,6 +2,8 @@ import java.awt.EventQueue;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.FontUIResource;
+
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.Color;
@@ -190,6 +192,8 @@ public class LoginPage extends JFrame {
 		panelRight.add(btnLogin, gbc_btnLogin);
 	}
 	public void mostraMessaggioDiErrore(String testo, String titolo) {
+		javax.swing.UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Tahoma", Font.PLAIN, 16))); 
 		JOptionPane.showMessageDialog(this, testo, titolo, JOptionPane.INFORMATION_MESSAGE);
+		
 	}
 }

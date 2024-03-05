@@ -5,9 +5,7 @@ import java.util.*;
 
 public class VisualizzaNotificheDialog extends JDialog {
 
-    /**
-	 * 
-	 */
+    
 	private static final long serialVersionUID = 1L;
 	private JTextArea notificationTextArea;
     private LinkedList<Notifica> notifiche;
@@ -15,7 +13,7 @@ public class VisualizzaNotificheDialog extends JDialog {
     
 
     public VisualizzaNotificheDialog(Controller gestore,LinkedList<Notifica> notifiche) {
-        //super("Visualizza le tue notifiche");
+        
     	controller=gestore;
     	this.notifiche=notifiche;
         setBackground(new Color(0, 255, 255));
@@ -26,10 +24,10 @@ public class VisualizzaNotificheDialog extends JDialog {
 
         
 
-        // Utilizzo di BorderLayout per il pannello principale
+        
         getContentPane().setLayout(new BorderLayout());
 
-        // Creazione dell'area di testo per le notifiche con ScrollPane
+       
         notificationTextArea = new JTextArea();
         notificationTextArea.setFont(new Font("Tahoma", Font.PLAIN, 16));
         notificationTextArea.setForeground(new Color(255,255,255));
@@ -42,7 +40,7 @@ public class VisualizzaNotificheDialog extends JDialog {
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        // Aggiunta delle notifiche all'area di testo
+       
         for (Notifica notifica : notifiche) {
         	if(notifica.getInterazioneGenerante()!=null)
         	{
@@ -62,7 +60,7 @@ public class VisualizzaNotificheDialog extends JDialog {
         	
         }
 
-        // Aggiunta dello scroll pane al frame
+       
         getContentPane().add(scrollPane, BorderLayout.CENTER);
 
         

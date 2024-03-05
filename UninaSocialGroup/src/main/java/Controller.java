@@ -238,18 +238,25 @@ public class Controller {
 			if(postReport!=null)
 				numeroInterazioni=postDao.getNumeroCommenti(postReport.getIdPost());
 		}
-		if(postReport==null)
+		if(reportScelto.equals("Numero di contenuti postati"))
 		{
-			gestisciGruppoPage.mostraMessaggioDiDialogo("Nessun post disponibile","Errore!");
+			int numeroContenutiPostati=postDao.getNumeroContenutiPostati(gruppo.getIdGruppo(),anno,mese);
+			gestisciGruppoPage.mostraMessaggioDiDialogo("Numero di contenuti postati questo mese: "+numeroContenutiPostati, "Report");
 		}
 		else
 		{
-			visualizzaPostDialog=new VisualizzaPostDialog(this,postReport,numeroInterazioni);
-			visualizzaPostDialog.setLocationRelativeTo(gestisciGruppoPage);
-			visualizzaPostDialog.setVisible(true);
-				
+			if(postReport==null)
+			{
+				gestisciGruppoPage.mostraMessaggioDiDialogo("Nessun post disponibile","Errore!");
+			}
+			else
+			{
+				visualizzaPostDialog=new VisualizzaPostDialog(this,postReport,numeroInterazioni);
+				visualizzaPostDialog.setLocationRelativeTo(gestisciGruppoPage);
+				visualizzaPostDialog.setVisible(true);
+					
+			}
 		}
-		
 		
 	}
 }

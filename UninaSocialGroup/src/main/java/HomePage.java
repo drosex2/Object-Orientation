@@ -2,6 +2,8 @@ import java.awt.EventQueue;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.FontUIResource;
+
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
@@ -182,6 +184,8 @@ public class HomePage extends JFrame {
 		panelRight.add(lblNewLabel_1, gbc_lblNewLabel_1);
 	}
 	public void mostraMessaggioDiDialogo(String testo, String titolo) {
+		javax.swing.UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Tahoma", Font.PLAIN, 16))); 
 		JOptionPane.showMessageDialog(this, testo, titolo, JOptionPane.INFORMATION_MESSAGE);
+		
 	}
 }
