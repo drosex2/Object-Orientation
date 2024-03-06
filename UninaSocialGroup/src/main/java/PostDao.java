@@ -381,10 +381,7 @@ public class PostDao {
             // crea uno statement semplice
             stmt = this.conn.createStatement();
 
-            PreparedStatement ps_queryforname = conn.prepareStatement("select count(*)"
-            		+ "from post"
-            		+ "where post.\"idGruppo\"='"+idGruppo+"' AND extract(year from post.\"dataPubblicazione\")="+anno
-            		+ "AND extract(month from post.\"dataPubblicazione\")="+mese+"");
+            PreparedStatement ps_queryforname = conn.prepareStatement("select count(*)\r\n from post where post.\"idGruppo\"='"+idGruppo+"' AND extract(year from post.\"dataPubblicazione\")="+anno+" AND extract(month from post.\"dataPubblicazione\")="+mese+";");
             		
             
             ResultSet rs = ps_queryforname.executeQuery();

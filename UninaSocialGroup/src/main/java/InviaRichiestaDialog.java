@@ -101,6 +101,7 @@ public class InviaRichiestaDialog extends JDialog {
 		}
 	}
 	public void setCbSelezionaGruppo(LinkedList<Gruppo> gruppi) {
+		cbSelezionaGruppo.removeAllItems();
 		for(Gruppo g:gruppi)
 		{
 			this.cbSelezionaGruppo.addItem(g.getNome());
